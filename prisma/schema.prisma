@@ -8,17 +8,17 @@ datasource db {
 }
 
 model Asset {
-  id      String   @id @map("_id")
-  symbol  String   @unique
+  id      String   @id @map("_id") 
+  symbol  String
 
-  orders  Order[]  @relation("AssetOrders") // Relação com o modelo Order
+  orders  Order[]  @relation("AssetOrders")
 }
 
 model Order {
-  id       String   @id @map("_id")
-  asset_id String   
+  id       String   @id @default(auto()) @map("_id")  @db.ObjectId
+  asset_id String
   price    Float
   status   String   @default("open")
-  
-  asset    Asset    @relation(fields: [asset_id], references: [id], name: "AssetOrders")
+
+  asset    Asset    @relation("AssetOrders", references: [id], fields: [asset_id])
 }
