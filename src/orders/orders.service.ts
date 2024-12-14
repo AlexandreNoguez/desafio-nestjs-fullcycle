@@ -8,14 +8,18 @@ export class OrdersService {
   constructor(private prismaService: PrismaService) {}
 
   async createOrder(data: { asset_id: string; price: number }) {
+    console.log(data.asset_id);
     const assetExists = await this.prismaService.asset.findUnique({
       where: { id: data.asset_id },
     });
 
     if (!assetExists) {
+      console.log('entrei');
+
       throw new NotFoundException(`O asset_id '${data.asset_id}' é inválido.`);
     }
-
+    
+    return;
     return this.prismaService.order.create({
       data: {
         asset_id: data.asset_id,
