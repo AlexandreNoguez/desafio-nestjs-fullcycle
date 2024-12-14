@@ -1,0 +1,25 @@
+### Criar um Asset
+POST http://localhost:3000/assets
+Content-Type: application/json
+
+{
+  "id": "real",
+  "symbol": "R$"
+}
+
+### Listar Assets
+GET http://localhost:3000/assets
+
+### Criar uma Order
+POST http://localhost:3000/orders
+Content-Type: application/json
+
+{
+  "asset_id": "real",
+  "price": 150.5,
+  "status": "pending" // deve causar um erro
+
+}
+
+### Listar Orders
+GET http://localhost:3000/orders
