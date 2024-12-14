@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
@@ -7,7 +7,15 @@ import { PrismaService } from 'src/prisma/prisma.service';
 export class OrdersService {
   constructor(private prismaService: PrismaService) {}
 
-  createOrder(data: { asset_id: string; price: number }) {
+  async createOrder(data: { asset_id: string; price: number }) {
+    const assetExists = await this.prismaService.asset.findUnique({
+      where: { id: data.asset_id },
+    });
+
+    if (!assetExists) {
+      throw new NotFoundException(`O asset_id '${data.asset_id}' é inválido.`);
+    }
+
     return this.prismaService.order.create({
       data: {
         asset_id: data.asset_id,
