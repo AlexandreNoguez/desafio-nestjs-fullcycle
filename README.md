@@ -1,99 +1,140 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# 🚀 Desafio API Rest com Nest.js, MongoDB e Docker
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+Este projeto é uma aplicação **Nest.js** conectada ao **MongoDB** com **Prisma ORM**. O ambiente é configurado para rodar com **Docker** e **Docker Compose**, e a API expõe 4 rotas REST.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+---
 
-## Description
+## **📝 Funcionalidades**
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+### **Rotas da API**
+| Método | Rota             | Descrição                 |
+|--------|------------------|---------------------------|
+| `GET`  | `/api/assets`    | Lista todos os assets     |
+| `POST` | `/api/assets`    | Cria um novo asset        |
+| `GET`  | `/api/orders`    | Lista todas as orders     |
+| `POST` | `/api/orders`    | Cria uma nova order       |
 
-## Project setup
+---
 
-```bash
-$ npm install
+## **⚙️ Estrutura dos Dados**
+
+### **Asset**
+- `id` (string): Informado pelo usuário.
+- `symbol` (string): Símbolo do ativo.
+
+Exemplo de Asset no `POST /api/assets`:
+
+```json
+{
+  "id": "asset-001",
+  "symbol": "AAPL"
+}
 ```
 
-## Compile and run the project
+### **Order**
 
-```bash
-# development
-$ npm run start
+- `id`: Gerado automaticamente pelo banco.
+- `asset_id` (string): Relacionado a um Asset.
+- `price` (number): Preço da ordem.
+- `status` (string): Valores aceitos são open, pending, ou closed (não pode ser - informado no POST).
 
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+```json
+{
+  "asset_id": "asset-001",
+  "price": 150.00
+}
 ```
 
-## Run tests
+## 🛠️ Tecnologias Utilizadas
+- Nest.js: Framework para Node.js.
+- MongoDB: Banco de dados NoSQL.
+- Prisma ORM: Gerenciamento do banco de dados.
+- Docker e Docker Compose: Para ambiente containerizado.
 
+## ⚙️ Pré-requisitos
+Antes de iniciar o projeto, certifique-se de ter instalado:
+
+- **Docker**
+- **Docker Compose**
+
+## 🚀 Como Rodar o Projeto
+1. Clone o repositório
 ```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+git clone https://github.com/seu-usuario/nestjs-api-challenge.git
+cd nestjs-api-challenge
 ```
 
-## Deployment
-
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
-
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+2. Configure as variáveis de ambiente
+Crie um arquivo .env com base no arquivo .env.example fornecido:
 
 ```bash
-$ npm install -g mau
-$ mau deploy
+cp .env.example .env
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+Exemplo de .env:
 
-## Resources
+```bash
+DATABASE_URL="mongodb://root:root@db:27017/mydatabase"
+```
 
-Check out a few resources that may come in handy when working with NestJS:
+3. Suba o projeto com Docker Compose
+Execute o seguinte comando para construir e iniciar os containers:
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+```bash
+docker-compose up --build
+```
 
-## Support
+## 📄 Testando as Rotas
+Utilize o arquivo api.http para testar as chamadas HTTP diretamente no VSCode ou em ferramentas como Insomnia e Postman.
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+Exemplos de api.http
 
-## Stay in touch
+```bash
+### Listar Assets
+GET http://localhost:3000/api/assets
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+### Criar Asset
+POST http://localhost:3000/api/assets
+Content-Type: application/json
 
-## License
+{
+  "id": "asset-001",
+  "symbol": "AAPL"
+}
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+### Listar Orders
+GET http://localhost:3000/api/orders
+
+### Criar Order
+POST http://localhost:3000/api/orders
+Content-Type: application/json
+
+{
+  "asset_id": "asset-001",
+  "price": 150.00
+}
+```
+
+## 🖥️ Estrutura do Projeto
+
+```plaintext
+nestjs-api-challenge/
+├── prisma/                 # Configuração do Prisma e gerador do cliente
+│   ├── schema.prisma       # Definição do modelo de banco de dados
+├── src/                    # Código-fonte do projeto
+│   ├── assets/             # Módulo de assets
+│   ├── orders/             # Módulo de orders
+│   ├── app.module.ts       # Módulo principal do Nest.js
+│   ├── main.ts             # Arquivo de inicialização
+├── .dockerignore           # Arquivos ignorados no Docker
+├── .env.example            # Exemplo de variáveis de ambiente
+├── Dockerfile              # Configuração do Docker
+├── docker-compose.yml      # Configuração do Docker Compose
+├── api.http                # Exemplo de chamadas HTTP
+├── package.json            # Dependências do projeto
+└── README.md               # Documentação
+```
+
+## 🧑‍💻 Autor
+- Desenvolvido por **Alexandre Noguez**
+- 🔗 [LinkedIn](https://www.linkedin.com/in/alexandre-noguez/)
